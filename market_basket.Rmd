@@ -1,0 +1,49 @@
+---
+title: "mrket bsket"
+author: "Ethan Carpenter"
+date: "2/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(arules)
+library(datasets)
+data("Groceries")
+```
+
+
+```{r}
+#Step 2: look at data
+itemFrequencyPlot(Groceries, topN=10, type = "absolute")
+```
+
+
+```{r setup, include=FALSE}
+#Step 3: Run MB Analysis
+
+#set minimum support to 0.001
+#set minimum confidence to 0.8
+
+rules <- apriori(Groceries, parameter = list(supp=0.001,
+                                             conf=0.9))
+
+options(digits = 2)
+inspect(rules[1:10])
+```
+
+
+```{r setup, include=FALSE}
+#STEP 4: Sort rules
+
+rules <- sort(rules, decreasing = TRUE, by="confidence")
+inspect(rules[1:5])
+```
+
+
+```{r setup, include=FALSE}
+#STEP 5: Plot rules
+library(arulesViz)
+plot(rules[1:5], method="graph",shading = NA)
+```
+

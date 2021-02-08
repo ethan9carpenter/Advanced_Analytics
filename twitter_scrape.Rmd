@@ -1,0 +1,73 @@
+---
+title: "intro to R"
+author: "Ethan Carpenter"
+date: "2/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library("twitteR")
+library("ROAuth")
+library(purrr)
+library(dplyr)
+```
+
+```{r}
+keys <- jsonlite::read_json('api_keys.json')
+options(httr_oauth_cache=TRUE)
+setup_twitter_oauth(consumer_key = keys['api_key'], consumer_secret = keys['secret_key'],
+                    access_token = keys['access_token'], access_secret = keys['access_secret_token'])
+```
+
+
+```{r}
+user <- "@ethan9carpenter"
+
+tweets <- userTimeline(user, n = 3200)
+
+tweets <- tbl_df(map_df(tweets, as.data.frame))
+
+write.csv(tweets, paste0(user, '.csv'))
+```
+
+
+```{r}
+#To create a list 3200 Tweets containing a certain hashtag:
+NovaNation <- searchTwitter("#NovaNation exclude:retweets", n=3200)
+
+NovaNation_df <- tbl_df(map_df(XXX, as.data.frame))
+
+write.csv(NovaNation_df, "NovaNation3.csv")
+```
+
+
+```{r}
+#By looking at the post time of the first tweet and last tweet in this dataframe,
+#it suggests that there is a limit of about 10 days tweets are returned due to API reason.
+```
+
+
+```{r}
+#To create a list of tweets sent to a user:
+tweetstoDean <- searchTwitter("@VSB_Dean exclude:retweets", n=3200)
+
+XXX <- tbl_df(map_df(tweetstoDean, as.data.frame))
+
+write.csv(XXX, "tweetstoDean1.csv")
+```
+
+
+```{r}
+tweetstoVSB <- searchTwitter("@VU_Business exclude:retweets", n=3200)
+
+tweetstoVSB_df <- tbl_df(map_df(tweetstoVSB, as.data.frame))
+
+write.csv(tweetstoVSB_df, "tweetstoVSB.csv")
+```
+
+
+```{r}
+```
+
